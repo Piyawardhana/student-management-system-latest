@@ -67,5 +67,38 @@ export function EntityTable<T>({ data, children }: ITableProps<T>) {
     })
   );
 
-  return <div></div>;
+  return (
+    <div className="text-gray-900 bg-gray-200">
+      <div className="px-3 py-4 flex justify-center">
+        <table className="w-full text-md bg-white shadow-md rounded mb-4">
+          <thead>
+            <tr className="border-b">
+              {columns.map((column, index) => (
+                <th key={index} className="text-left p-3 px-5">
+                  {column.props.columnHeader}
+                  <input
+                    type="text"
+                    onChange={(event) =>
+                      handleInputChange(event, column.props.columnName)
+                    }
+                  />
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filterData.map((item, index) => (
+              <tr key={index} className="border-b hover:bg-orange-100">
+                {columns.map((column, columnIndex) => (
+                  <td key={columnIndex} className="p-3 px-5">
+                    {String(item[column.props.columnName])}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
