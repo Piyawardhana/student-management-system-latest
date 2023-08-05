@@ -5,9 +5,8 @@ module.exports = {
   theme: {
     extend: {},
   },
-  variants:  {
+  variants: {
     extend: {},
   },
   plugins: [],
-}
-
+};

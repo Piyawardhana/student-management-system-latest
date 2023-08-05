@@ -6,7 +6,11 @@
   "author": "MaheshBawantha <maheshbawantha1998@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start-frontend": "cd frontend && yarn start"
-    }
+    "start-frontend": "cd frontend && yarn start",
+    "format": "prettier --write .",
+    "format-check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.0.1"
+  }
 }
-
