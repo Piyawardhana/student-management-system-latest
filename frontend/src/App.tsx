@@ -1,31 +1,25 @@
-
-import './App.css';
-import { EntityTable, EntityTableColumn } from './components/table/EntityTable';
+import { useState } from "react";
+import "./App.css";
+import { EntityTable, EntityTableColumn } from "./components/table/EntityTable";
+import useFetch from "./hooks/useFetch";
 
 function App() {
- const data = [
-  { id: 1, name: 'Alice', age: 25 },
-  { id: 2, name: 'Bob', age: 30 },
-  { id: 3, name: 'Charlie', age: 35 },
- ]
+  const { data, loading, error } = useFetch("/api/v1/students");
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   return (
-    <EntityTable data={data}>
-      <EntityTableColumn
-        columnHeader="ID"
-        columnName="id"
-        filter={(filterValue, columnValue) => columnValue.toString().includes(filterValue)}
-      />
-      <EntityTableColumn
-        columnHeader="Name"
-        columnName="name"
-        filter={(filterValue, columnValue) => columnValue.toLowerCase().includes(filterValue.toLowerCase())}
-      />
-      <EntityTableColumn
-        columnHeader="Age"
-        columnName="age"
-        filter={(filterValue, columnValue) => columnValue.toString().includes(filterValue)}
-      />
+    <EntityTable data={data || []}>
+      <EntityTableColumn columnHeader="ID" columnName="id" />
+      <EntityTableColumn columnHeader="First Name" columnName="firstName" />
+      <EntityTableColumn columnHeader="Last Name" columnName="lastName" />
+      <EntityTableColumn columnHeader="Age" columnName="age" />
     </EntityTable>
   );
 }
