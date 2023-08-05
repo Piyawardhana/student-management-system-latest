@@ -1,0 +1,12 @@
+{
+  "name": "student-management-system-latest",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Piyawardhana/student-management-system-latest.git",
+  "author": "MaheshBawantha <maheshbawantha1998@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start-frontend": "cd frontend && yarn start"
+    }
+}
+
