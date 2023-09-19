@@ -1,74 +1,40 @@
 package com.studentManagementSystem.model.student;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotBlank;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "students")
+@NoArgsConstructor
+@Setter
+@Getter
+@Table(name = "students", uniqueConstraints = @UniqueConstraint(columnNames = {"email", "phoneNo"}))
 public class Student {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	@GeneratedValue(generator = "student_generator")
+	private Long id;
 
-	@Column(name = "first_name")
+	@NotBlank
 	private String firstName;
 
-	@Column(name = "last_name")
+	@NotBlank
 	private String lastName;
 
-	@Column(name = "age")
-	private long age;
+	@NotBlank
+	private Long age;
 
-	@Column(name = "email")
+	@NotBlank
 	private String email;
+
+	@NotBlank
+	private String phoneNo;
 	
-	public Student() {
-		
-	}
-	
-	public Student(String firstName, String lastName, long age, String email) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-        this.age = age;
-		this.email = email;
-	}
-	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-    public long getAge() {
-		return age;
-	}
-	public void setAge(long age) {
-		this.age = age;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-    
 }
