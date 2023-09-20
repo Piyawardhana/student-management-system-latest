@@ -9,7 +9,7 @@ interface ITableColumnProps<T> {
 
 //Table props interface
 interface ITableProps<T> {
-  data: T[];
+  data: { content: T[] };
   children: React.ReactElement<ITableColumnProps<T>>[];
 }
 
@@ -43,7 +43,7 @@ export function EntityTable<T>({ data, children }: ITableProps<T>) {
         {} as { [key: string]: ((value: any) => boolean) | undefined },
       ),
     );
-  }, [filterInputs]);
+  }, [filterInputs, columns]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, columnName: keyof T) => {
     setFilterInputs((prevState) => ({
@@ -52,7 +52,7 @@ export function EntityTable<T>({ data, children }: ITableProps<T>) {
     }));
   };
 
-  const filterData = data.filter((item) =>
+  const filterData = (data?.content || []).filter((item:any) =>
     columns.every((column) => {
       const filter = filters[String(column.props.columnName)];
       return !filter || filter(item[column.props.columnName]);
@@ -77,7 +77,7 @@ export function EntityTable<T>({ data, children }: ITableProps<T>) {
             </tr>
           </thead>
           <tbody>
-            {filterData.map((item, index) => (
+            {filterData.map((item: any, index:any) => (
               <tr key={index} className="border-b hover:bg-orange-100">
                 {columns.map((column, columnIndex) => (
                   <td key={columnIndex} className="p-3 px-5">

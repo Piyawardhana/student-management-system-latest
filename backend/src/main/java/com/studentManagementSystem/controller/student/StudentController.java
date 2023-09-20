@@ -1,35 +1,38 @@
 package com.studentManagementSystem.controller.student;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.studentManagementSystem.dto.StudentDTO;
 import com.studentManagementSystem.model.student.Student;
-import com.studentManagementSystem.repository.student.StudentRepository;
+import com.studentManagementSystem.service.students.StudentService;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/students")
 public class StudentController {
 
     @Autowired
-	private StudentRepository studentRepository;
+	private StudentService studentService;
 
-	// get all students
-
-	@GetMapping("/students")
-	public List<Student> getAllStudents() {
-		return studentRepository.findAll();
+	// @ApiOperation(value = "Get all students", response = Student.class)
+	@GetMapping
+    public Page<Student> getAllStudents(Pageable pageable) {
+		Page<Student> pageableStudents = studentService.getAllStudents(pageable);
+		return pageableStudents;
 	}
 
-	@PostMapping("/students")
-	public String createStudent(@RequestBody Student std) {
-		studentRepository.save(std);
-		return "Successfully Inserted";
+	// @ApiOperation(value = "Get all students", response = StudentDTO.class)
+	@PostMapping("/create-student")
+	public ResponseEntity<StudentDTO> upsertStudent(@RequestBody StudentDTO studentDTO) {
+		StudentDTO savedStudent = studentService.upsertStudent(studentDTO);
+		return new ResponseEntity<StudentDTO>(savedStudent, HttpStatus.CREATED);
 	}
-    
 }
