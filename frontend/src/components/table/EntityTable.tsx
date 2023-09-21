@@ -53,7 +53,7 @@ export function EntityTable<T>({ data, currentPage, setCurrentPage, children }: 
         {} as { [key: string]: ((value: any) => boolean) | undefined },
       ),
     );
-  }, [filterInputs, columns]);
+  }, [filterInputs]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, columnName: keyof T) => {
     setFilterInputs((prevState) => ({
