@@ -10,10 +10,12 @@ public interface TeacherService {
 
     Page<Teacher> getAllTeachers(Pageable pageable );
 
-    String createTeacher(TeacherDTO teacherDTO);
+    TeacherDTO getTeacherById(Long id);
+
+    TeacherDTO createTeacher(TeacherDTO teacherDTO);
 
     TeacherDTO updateTeacher(TeacherDTO teacherDTO);
 
-    String deleteTeacher(TeacherDTO teacherDTO);
+    void deleteTeacher(Long id);
 
 }

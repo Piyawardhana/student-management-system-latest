@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-@Table(name = "teachers", uniqueConstraints = @UniqueConstraint(columnNames = {}))
+@Table(name = "teachers", uniqueConstraints = @UniqueConstraint(columnNames = {"email", "phoneNo"}))
 public class Teacher {
 
     @Id
