@@ -31,7 +31,7 @@ public class TeacherController {
             return pageableTeachers;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable Long id){
         TeacherDTO teacherDTO = teacherService.getTeacherById(id);
 
@@ -48,15 +48,12 @@ public class TeacherController {
     @PutMapping("/update-teacher")
     public ResponseEntity<TeacherDTO> updateTeacher(@RequestBody TeacherDTO teacherDTO){
         TeacherDTO updatedTeacherDTO = teacherService.updateTeacher(teacherDTO);
-
-        return new ResponseEntity<TeacherDTO>(updatedTeacherDTO, HttpStatus.OK);
+        return new ResponseEntity<TeacherDTO>(updatedTeacherDTO, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTEacher(@PathVariable Long id){
-        teacherService.deleteTeacher(id);
-
-        return new ResponseEntity<>("Successfully Deleted", HttpStatus.OK);
-    }
-    
+    @DeleteMapping("{id}")
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable Long id){
+        teacherService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }  
 }

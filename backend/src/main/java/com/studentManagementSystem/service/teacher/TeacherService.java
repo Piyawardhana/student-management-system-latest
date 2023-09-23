@@ -2,6 +2,8 @@ package com.studentManagementSystem.service.teacher;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import com.studentManagementSystem.dto.TeacherDTO;
 import com.studentManagementSystem.model.teacher.Teacher;
@@ -16,6 +18,6 @@ public interface TeacherService {
 
     TeacherDTO updateTeacher(TeacherDTO teacherDTO);
 
-    void deleteTeacher(Long id);
+    ResponseEntity<HttpStatus> deleteById(Long id);
 
 }
