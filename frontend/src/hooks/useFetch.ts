@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 
-function useFetch(url: string, options?: any) {
+export default function useTableFetch(url: string, currentPage?: number) {
   const [data, setData] = useState<null | any>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  console.log(url);
+  const [error, setError] = useState<Error | null>(null);
+  const pageSize = 10;
+
   useEffect(() => {
-    async function fetchdata() {
+    async function fetchData() {
       setLoading(true);
       try {
-        const response = await fetch(url, options);
+        const paginatedUrl = `${url}?page=${currentPage}&size=${pageSize}`;
+        const response = await fetch(paginatedUrl);
         if (!response.ok) {
-          throw new Error('Faild to fetch data from the server');
+          throw new Error('Error while fetching data!');
         }
         const data = await response.json();
         setData(data);
@@ -21,10 +23,8 @@ function useFetch(url: string, options?: any) {
         setLoading(false);
       }
     }
-    fetchdata();
-  }, [url, options]);
+    fetchData();
+  }, [url, currentPage]);
 
   return { data, loading, error };
 }
-
-export default useFetch;

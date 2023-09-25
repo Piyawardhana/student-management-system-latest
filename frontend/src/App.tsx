@@ -1,20 +1,22 @@
+import { useState } from 'react';
 import './App.css';
 import { EntityTable, EntityTableColumn } from './components/table/EntityTable';
-import useFetch from './hooks/useFetch';
+import useTableFetch from './hooks/useFetch';
 
 function App() {
-  const { data, loading, error } = useFetch('/students');
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data, loading, error } = useTableFetch('/students', currentPage);
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p>Error: {error.message}</p>;
   }
-console.log(data);
+
   return (
-    <EntityTable data={data || []}>
+    <EntityTable data={data || []} currentPage={currentPage} setCurrentPage={setCurrentPage}>
       <EntityTableColumn columnHeader="ID" columnName="id" />
       <EntityTableColumn columnHeader="First Name" columnName="firstName" />
       <EntityTableColumn columnHeader="Last Name" columnName="lastName" />
