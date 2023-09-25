@@ -41,6 +41,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn
+      - name: Explicitly install react-scripts
+        run: yarn add react-scripts
       - name: Yarn Build
         run: yarn build
         working-directory: ./frontend
