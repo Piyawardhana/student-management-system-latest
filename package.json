@@ -8,9 +8,7 @@
   "scripts": {
     "start-frontend": "cd frontend && yarn start",
     "format": "prettier --write .",
-    "format-check": "prettier --check .",
-    "test": "cd frontend && yarn test",
-    "build": "cd frontend && yarn build"
+    "format-check": "prettier --check ."
   },
   "devDependencies": {
     "prettier": "^3.0.1"
