@@ -31,6 +31,7 @@ public class TeacherController {
             return pageableTeachers;
     }
 
+    //testing git workflows for backend
     @GetMapping("{id}")
     public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable Long id){
         TeacherDTO teacherDTO = teacherService.getTeacherById(id);
