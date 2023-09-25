@@ -55,7 +55,7 @@ export function EntityTable<T>({ data, currentPage, setCurrentPage, children }: 
     if (!_.isEqual(newFilters, filters)) {
       setFilters(newFilters);
     }
-  }, [filterInputs, columns]);
+  }, [filterInputs, columns, filters]);
   
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, columnName: keyof T) => {
     setFilterInputs((prevState) => ({
