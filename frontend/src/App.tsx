@@ -11,6 +11,7 @@ function App() {
     return <p>Loading...</p>;
   }
 
+  // test frontend workflows
   if (error) {
     return <p>Error: {error.message}</p>;
   }
