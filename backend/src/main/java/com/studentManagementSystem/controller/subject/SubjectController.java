@@ -1,7 +1,8 @@
 package com.studentManagementSystem.controller.subject;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,14 +25,10 @@ public class SubjectController {
     private SubjectService subjectService;
 
     @GetMapping
-    public List<Subject> getAllSubjects() {
-        List<Subject> subjects = subjectService.getAllSubjects();
+    public Page<Subject> getAllSubjects(Pageable pageable) {
+        Page<Subject> subjects = subjectService.getAllSubjects(pageable);
 
-        if(!subjects.isEmpty()){
-            return subjects;
-        } else{
-            throw new InternalError("No records available");
-        }
+        return subjects;
     }
 
     @GetMapping("{id}")

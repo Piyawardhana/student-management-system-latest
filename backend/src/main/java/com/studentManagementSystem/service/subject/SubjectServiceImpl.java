@@ -1,8 +1,9 @@
 package com.studentManagementSystem.service.subject;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,14 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectRepository subjectRepository;
 
     @Override
-    public List<Subject> getAllSubjects() {
-        List<Subject> subjects = subjectRepository.findAll();
+    public Page<Subject> getAllSubjects(Pageable pageable) {
+        Page<Subject> subjects = subjectRepository.findAll(pageable);
 
-        return subjects;
+        if(!subjects.isEmpty()){
+            return subjects;
+        } else{
+            throw new InternalError("No subjects available");
+        }
     }
 
     @Override
@@ -32,7 +37,7 @@ public class SubjectServiceImpl implements SubjectService {
 
             return subjectDTO;
         } catch (Exception e) {
-            throw new InternalError("No record is available with " + id + " id");
+            throw new InternalError("No subject is available with " + id + " id");
         }
     }
 
