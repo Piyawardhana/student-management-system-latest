@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import _ from 'lodash';
 
 //Column props interface
 interface ITableColumnProps<T> {
@@ -39,22 +40,23 @@ export function EntityTable<T>({ data, currentPage, setCurrentPage, children }: 
   };
 
   useEffect(() => {
-    setFilters(
-      columns.reduce(
-        (acc, column) => {
-          if (column.props.filter) {
-            acc[String(column.props.columnName)] = column.props.filter.bind(
-              null,
-              filterInputs[String(column.props.columnName)] || '',
-            );
-          }
-          return acc;
-        },
-        {} as { [key: string]: ((value: any) => boolean) | undefined },
-      ),
+    const newFilters = columns.reduce(
+      (acc, column) => {
+        if (column.props.filter) {
+          acc[String(column.props.columnName)] = column.props.filter.bind(
+            null,
+            filterInputs[String(column.props.columnName)] || '',
+          );
+        }
+        return acc;
+      },
+      {} as { [key: string]: ((value: any) => boolean) | undefined },
     );
-  }, [filterInputs]);
-
+    if (!_.isEqual(newFilters, filters)) {
+      setFilters(newFilters);
+    }
+  }, [filterInputs, columns, filters]);
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, columnName: keyof T) => {
     setFilterInputs((prevState) => ({
       ...prevState,

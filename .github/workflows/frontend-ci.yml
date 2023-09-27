@@ -1,0 +1,52 @@
+name: Pre Merge Checks for frontend
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request: 
+    paths:
+      - 'frontend/**'
+  push: 
+    branches: 
+      - main
+    paths: 
+      - 'frontend/**'
+
+jobs: 
+  build-frontend:
+    name: Build Front-end main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: 'echo "::set-output name=dir::$(yarn cache dir)"'
+      - uses: actions/cache@v2
+        id: yarn-cache
+        with: 
+          path: '${{ steps.yarn-cache-dir-path.outputs.dir }}'
+          key: "${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}"
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./frontend
+      - name: Explicitly install react-scripts
+        run: yarn add react-scripts
+      - name: Yarn Build
+        run: yarn build
+        working-directory: ./frontend
+      - name: Run Tests
+        run: yarn test
+        working-directory: ./frontend
