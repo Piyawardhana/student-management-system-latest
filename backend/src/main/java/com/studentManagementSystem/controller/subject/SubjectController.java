@@ -40,14 +40,14 @@ public class SubjectController {
 
     @PostMapping("/create-subject")
     public ResponseEntity<SubjectDTO> createSubject(@RequestBody SubjectDTO subjectDTO) {
-        SubjectDTO createdSubjectDTO = subjectService.createSubject(subjectDTO);
+        SubjectDTO createdSubjectDTO = subjectService.upsertSubject(subjectDTO);
 
         return new ResponseEntity<SubjectDTO>(createdSubjectDTO, HttpStatus.CREATED);
     }
 
     @PutMapping("/update-subject")
     public ResponseEntity<SubjectDTO> updateSubject(@RequestBody SubjectDTO subjectDTO) {
-        SubjectDTO updatedSubjectDTO = subjectService.updateSubject(subjectDTO);
+        SubjectDTO updatedSubjectDTO = subjectService.upsertSubject(subjectDTO);
 
         return new ResponseEntity<SubjectDTO>(updatedSubjectDTO, HttpStatus.CREATED);
     }

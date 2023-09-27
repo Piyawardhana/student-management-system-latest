@@ -1,7 +1,7 @@
 package com.studentManagementSystem.service.subject;
 
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,8 +14,14 @@ import com.studentManagementSystem.repository.subject.SubjectRepository;
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
-    @Autowired
-    private SubjectRepository subjectRepository;
+    // @Autowired
+    // private SubjectRepository subjectRepository;
+
+    private final SubjectRepository subjectRepository;
+
+    public SubjectServiceImpl(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
+    }
 
     @Override
     public Page<Subject> getAllSubjects(Pageable pageable) {
@@ -42,30 +48,26 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectDTO createSubject(SubjectDTO subjectDTO) {
+    public SubjectDTO upsertSubject(SubjectDTO subjectDTO) {
         Subject subject = subjectDTO.getModel();
 
         try {
-            subjectRepository.save(subject);
-            SubjectDTO createdSubjectDTO = new SubjectDTO(subject);
+            if(subjectDTO.getId() == null){
+                subjectRepository.save(subject);
+                SubjectDTO createdSubjectDTO = new SubjectDTO(subject);
+                System.out.println("Created subject");
 
-            return createdSubjectDTO;
+                return createdSubjectDTO;
+            } else {
+                subjectRepository.save(subject);
+                SubjectDTO updatedSubjectDTO = new SubjectDTO(subject);
+                System.out.println("Updated subject");
+
+                return updatedSubjectDTO;
+            }
+            
         } catch (Exception e) {
-            throw new InternalError("Fail to save the subject");
-        }
-    }
-
-    @Override
-    public SubjectDTO updateSubject(SubjectDTO subjectDTO) {
-        Subject subject = subjectDTO.getModel();
-
-        try {
-            subjectRepository.save(subject);
-            SubjectDTO updatedSubjectDTO = new SubjectDTO(subject);
-
-            return updatedSubjectDTO;
-        } catch (Exception e) {
-            throw new InternalError("There is no subject existed with " + subject.getId() + " id");
+            throw new InternalError("Fail to save the subject because of the unique constraint of subjectCode");
         }
     }
 
