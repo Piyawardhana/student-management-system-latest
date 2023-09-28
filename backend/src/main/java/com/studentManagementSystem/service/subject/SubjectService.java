@@ -14,7 +14,7 @@ public interface SubjectService {
 
     SubjectDTO getSubjectById(Long id);
 
-    SubjectDTO upsertSubject(SubjectDTO subjectDTO);
+    ResponseEntity<HttpStatus> upsertSubject(SubjectDTO subjectDTO);
 
     ResponseEntity<HttpStatus> deleteSubjectById(Long id);
     

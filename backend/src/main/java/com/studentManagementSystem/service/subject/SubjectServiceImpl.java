@@ -1,7 +1,7 @@
 package com.studentManagementSystem.service.subject;
 
 import java.util.Optional;
-//import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,24 +14,20 @@ import com.studentManagementSystem.repository.subject.SubjectRepository;
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
-    // @Autowired
-    // private SubjectRepository subjectRepository;
+    @Autowired
+    private SubjectRepository subjectRepository;
 
-    private final SubjectRepository subjectRepository;
+    // private final SubjectRepository subjectRepository;
 
-    public SubjectServiceImpl(SubjectRepository subjectRepository) {
-        this.subjectRepository = subjectRepository;
-    }
+    // public SubjectServiceImpl(SubjectRepository subjectRepository) {
+    //     this.subjectRepository = subjectRepository;
+    // }
 
     @Override
     public Page<Subject> getAllSubjects(Pageable pageable) {
         Page<Subject> subjects = subjectRepository.findAll(pageable);
 
-        if(!subjects.isEmpty()){
-            return subjects;
-        } else{
-            throw new InternalError("No subjects available");
-        }
+        return subjects;
     }
 
     @Override
@@ -48,26 +44,15 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public SubjectDTO upsertSubject(SubjectDTO subjectDTO) {
+    public ResponseEntity<HttpStatus> upsertSubject(SubjectDTO subjectDTO) {
         Subject subject = subjectDTO.getModel();
 
         try {
-            if(subjectDTO.getId() == null){
-                subjectRepository.save(subject);
-                SubjectDTO createdSubjectDTO = new SubjectDTO(subject);
-                System.out.println("Created subject");
+            subjectRepository.save(subject);
 
-                return createdSubjectDTO;
-            } else {
-                subjectRepository.save(subject);
-                SubjectDTO updatedSubjectDTO = new SubjectDTO(subject);
-                System.out.println("Updated subject");
-
-                return updatedSubjectDTO;
-            }
-            
+            return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new InternalError("Fail to save the subject because of the unique constraint of subjectCode");
+            throw new InternalError("Fail to save the subject.");
         }
     }
 

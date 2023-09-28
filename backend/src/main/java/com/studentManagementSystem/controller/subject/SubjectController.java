@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,18 +37,11 @@ public class SubjectController {
         return new ResponseEntity<SubjectDTO>(subjectDTO, HttpStatus.OK);
     }
 
-    @PostMapping("/create-subject")
-    public ResponseEntity<SubjectDTO> createSubject(@RequestBody SubjectDTO subjectDTO) {
-        SubjectDTO createdSubjectDTO = subjectService.upsertSubject(subjectDTO);
+    @PostMapping("/upsert-subject")
+    public ResponseEntity<HttpStatus> upsertSubject(@RequestBody SubjectDTO subjectDTO) {
+        subjectService.upsertSubject(subjectDTO);
 
-        return new ResponseEntity<SubjectDTO>(createdSubjectDTO, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/update-subject")
-    public ResponseEntity<SubjectDTO> updateSubject(@RequestBody SubjectDTO subjectDTO) {
-        SubjectDTO updatedSubjectDTO = subjectService.upsertSubject(subjectDTO);
-
-        return new ResponseEntity<SubjectDTO>(updatedSubjectDTO, HttpStatus.CREATED);
+        return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
