@@ -1,18 +1,24 @@
 package com.studentManagementSystem.service.subject;
 
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import com.studentManagementSystem.common.utility.StringUtils;
 import com.studentManagementSystem.dto.SubjectDTO;
 import com.studentManagementSystem.model.subject.Subject;
 import com.studentManagementSystem.repository.subject.SubjectRepository;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
+
+    Logger logger = LoggerFactory.getLogger(SubjectServiceImpl.class);
 
     @Autowired
     private SubjectRepository subjectRepository;
@@ -38,22 +44,32 @@ public class SubjectServiceImpl implements SubjectService {
 
             return subjectDTO;
         } catch (Exception e) {
-            throw new InternalError("No subject is available with " + id + " id");
+            throw new IllegalArgumentException(String.format("No subject is available with ID:%s!", id));
+
         }
     }
 
     @Override
     public SubjectDTO upsertSubject(SubjectDTO subjectDTO) {
+
+        if (StringUtils.isBlank(subjectDTO.getSubjectCode())) {
+            throw new IllegalArgumentException("Subject code is required!");
+        }
+
+        if (StringUtils.isBlank(subjectDTO.getSubjectName())) {
+            throw new IllegalArgumentException("Subject name is required!");
+        }
+
         Subject subject = subjectDTO.getModel();
 
         try {
             subjectRepository.save(subject);
-            SubjectDTO resultDTO = new SubjectDTO(subject);
-            return resultDTO;
-
-        } catch (Exception e) {
-            throw new InternalError("Fail to save the subject.");
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Subject with the given subject code already exists!");
         }
+
+        SubjectDTO resultDTO = new SubjectDTO(subject);
+        return resultDTO;
     }
 
     @Override
@@ -62,7 +78,7 @@ public class SubjectServiceImpl implements SubjectService {
             subjectRepository.deleteById(id);
             return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            throw new InternalError("There is no subject existed with " + id + " id");
+             throw new IllegalArgumentException(String.format("No subject is available with ID:%s!", id));
         }
     }
 }
