@@ -6,7 +6,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
