@@ -23,10 +23,10 @@ public class Subject {
     @GeneratedValue(generator = "subject_generator")
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Subject code is required!")
     private String subjectCode;
 
-    @NotBlank
+    @NotBlank(message = "Subject name is required!")
     private String subjectName;
     
 }

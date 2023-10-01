@@ -26,7 +26,6 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public Page<Subject> getAllSubjects(Pageable pageable) {
         Page<Subject> subjects = subjectRepository.findAll(pageable);
-
         return subjects;
     }
 
@@ -44,13 +43,14 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> upsertSubject(SubjectDTO subjectDTO) {
+    public SubjectDTO upsertSubject(SubjectDTO subjectDTO) {
         Subject subject = subjectDTO.getModel();
 
         try {
             subjectRepository.save(subject);
+            SubjectDTO resultDTO = new SubjectDTO(subject);
+            return resultDTO;
 
-            return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
         } catch (Exception e) {
             throw new InternalError("Fail to save the subject.");
         }
@@ -60,11 +60,9 @@ public class SubjectServiceImpl implements SubjectService {
     public ResponseEntity<HttpStatus> deleteSubjectById(Long id) {
         try {
             subjectRepository.deleteById(id);
-
             return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             throw new InternalError("There is no subject existed with " + id + " id");
         }
     }
-    
 }

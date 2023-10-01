@@ -26,29 +26,24 @@ public class SubjectController {
     @GetMapping
     public Page<Subject> getAllSubjects(Pageable pageable) {
         Page<Subject> subjects = subjectService.getAllSubjects(pageable);
-
         return subjects;
     }
 
     @GetMapping("{id}")
     public ResponseEntity<SubjectDTO> getSubjectById(@PathVariable Long id) {
         SubjectDTO subjectDTO = subjectService.getSubjectById(id);
-
         return new ResponseEntity<SubjectDTO>(subjectDTO, HttpStatus.OK);
     }
 
     @PostMapping("/upsert-subject")
-    public ResponseEntity<HttpStatus> upsertSubject(@RequestBody SubjectDTO subjectDTO) {
-        subjectService.upsertSubject(subjectDTO);
-
-        return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
+    public ResponseEntity<SubjectDTO> upsertSubject(@RequestBody SubjectDTO subjectDTO) {
+        SubjectDTO resultDTO = subjectService.upsertSubject(subjectDTO);
+        return new ResponseEntity<>(resultDTO, HttpStatus.CREATED);
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteSubjectById(@PathVariable Long id) {
         subjectService.deleteSubjectById(id);
-
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }
